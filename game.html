@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Game Hứng Táo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Khung game theo yêu cầu */
+        #game-container {
+            width: 500px;
+            height: 400px;
+            border: 3px solid #333;
+            border-radius: 10px;
+            background: #ffffff;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Giỏ hứng */
+        #basket {
+            width: 80px;
+            height: 20px;
+            background: #8B4513; /* Màu nâu */
+            position: absolute;
+            bottom: 10px;
+            left: 210px;
+            border-radius: 5px;
+        }
+
+        /* Quả táo */
+        #apple {
+            width: 30px;
+            height: 30px;
+            background: #ff4d4d; /* Màu đỏ */
+            position: absolute;
+            top: 0;
+            left: 235px;
+            border-radius: 50%;
+            display: none; /* Ban đầu ẩn trước khi bấm Bắt đầu */
+        }
+
+        /* Bảng thông tin điểm số & mạng sống */
+        .info-panel {
+            width: 500px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Nút Bắt đầu */
+        #start-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+
+        #start-btn:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="info-panel">
+        <div>Điểm số: <span id="score">0</span></div>
+        <div>Mạng sống: <span id="lives">3</span></div>
+    </div>
+
+    <div id="game-container">
+        <div id="basket"></div>
+        <div id="apple"></div>
+    </div>
+
+    <button id="start-btn" onclick="startGame()">Bắt đầu</button>
+
+    <script>
+        const gameContainer = document.getElementById('game-container');
+        const basket = document.getElementById('basket');
+        const apple = document.getElementById('apple');
+        const scoreDisplay = document.getElementById('score');
+        const livesDisplay = document.getElementById('lives');
+        const startBtn = document.getElementById('start-btn');
+
+        // Các biến trạng thái game
+        let score = 0;
+        let lives = 3;
+        let isPlaying = false;
+
+        // Vị trí và tốc độ
+        let basketX = 210; // Vị trí ngang của giỏ
+        const basketSpeed = 25; // Tốc độ di chuyển khi nhấn phím
+
+        let appleX = 0;
+        let appleY = 0;
+        let appleSpeed = 3; // Tốc độ rơi ban đầu
+        let gameInterval = null;
+
+        // Bắt sự kiện bàn phím để điều khiển giỏ
+        document.addEventListener('keydown', (e) => {
+            if (!isPlaying) return;
+
+            if (e.key === 'ArrowLeft') {
+                basketX -= basketSpeed;
+                if (basketX < 0) basketX = 0; // Giới hạn không ra ngoài khung trái
+            } else if (e.key === 'ArrowRight') {
+                basketX += basketSpeed;
+                if (basketX > 420) basketX = 420; // 500 (khung) - 80 (rộng giỏ) = 420
+            }
+            basket.style.left = basketX + 'px';
+        });
+
+        // Hàm bắt đầu hoặc chơi lại game
+        function startGame() {
+            // Reset dữ liệu
+            score = 0;
+            lives = 3;
+            appleSpeed = 3;
+            scoreDisplay.textContent = score;
+            livesDisplay.textContent = lives;
+            
+            isPlaying = true;
+            startBtn.style.display = 'none'; // Ẩn nút bắt đầu khi đang chơi
+            apple.style.display = 'block';
+
+            resetApple();
+
+            // Vòng lặp chính của game (chạy mỗi 20ms)
+            if (gameInterval) clearInterval(gameInterval);
+            gameInterval = setInterval(updateGame, 20);
+        }
+
+        // Đặt lại vị trí ngẫu nhiên cho quả táo ở trên đỉnh
+        function resetApple() {
+            appleX = Math.floor(Math.random() * 470); // 500 - 30 (rộng táo)
+            appleY = 0;
+            apple.style.left = appleX + 'px';
+            apple.style.top = appleY + 'px';
+        }
+
+        // Logic cập nhật trạng thái trong mỗi khung hình game
+        function updateGame() {
+            // Táo rơi xuống
+            appleY += appleSpeed;
+            apple.style.top = appleY + 'px';
+
+            // Kiểm tra táo chạm đáy khung (chiều cao khung = 400, táo cao 30 -> đáy táo ở 370)
+            if (appleY >= 370) {
+                // Kiểm tra xem giỏ có hứng được táo không (dựa vào tọa độ trục hoành left)
+                // Giỏ rộng từ basketX đến basketX + 80
+                // Táo rộng từ appleX đến appleX + 30
+                if (appleX + 30 >= basketX && appleX <= basketX + 80) {
+                    // Hứng trúng
+                    score++;
+                    scoreDisplay.textContent = score;
+                    appleSpeed += 0.2; // Tăng nhẹ tốc độ sau mỗi lần hứng trúng
+                    resetApple();
+                } else {
+                    // Rơi trượt -> Mất mạng
+                    lives--;
+                    livesDisplay.textContent = lives;
+
+                    if (lives <= 0) {
+                        endGame();
+                    } else {
+                        resetApple();
+                    }
+                }
+            }
+        }
+
+        // Hàm kết thúc game
+        function endGame() {
+            isPlaying = false;
+            clearInterval(gameInterval);
+            apple.style.display = 'none';
+            alert('Game Over! Điểm số của bạn là: ' + score);
+            startBtn.style.display = 'block'; // Hiển thị lại nút để chơi lại
+            startBtn.textContent = 'Chơi lại';
+        }
+    </script>
+</body>
+</html>
