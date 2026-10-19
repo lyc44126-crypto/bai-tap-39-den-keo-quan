@@ -3,62 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang Chủ - Tổng Hợp Bài Tập Web</title>
+    <title>Trang Chủ - Lý Mạnh Cường</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f6f9;
             text-align: center;
-            padding-top: 50px;
+            padding: 40px 15px;
             margin: 0;
         }
         .container {
             background: #ffffff;
-            max-width: 600px;
+            max-width: 550px;
             margin: 0 auto;
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        h1 { color: #2c3e50; font-size: 22px; }
+        h1 {
+            color: #2c3e50;
+            font-size: 22px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        .avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #3498db;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .student-name {
+            font-size: 20px;
+            color: #2c3e50;
+            font-weight: bold;
+            margin: 5px 0;
+        }
         .student-info {
             font-size: 18px;
             color: #e74c3c;
             font-weight: bold;
-            margin: 20px 0;
+            margin-bottom: 25px;
         }
-        ul { list-style: none; padding: 0; }
-        li { margin: 15px 0; }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            margin: 12px 0;
+        }
         a {
-            display: inline-block;
-            padding: 12px 25px;
+            display: block;
+            padding: 12px 20px;
             background-color: #3498db;
             color: white;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 6px;
             font-weight: bold;
+            font-size: 15px;
             transition: background 0.3s;
         }
-        a:hover { background-color: #2980b9; }
+        a:hover {
+            background-color: #2980b9;
+        }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <h1>TỔNG HỢP BÀI TẬP JAVASCRIPT</h1>
+        <h1>BÀI TẬP - WEB CÓ HIỆU ỨNG JAVASCRIPT</h1>
         
-        <!-- Thay đổi mã sinh viên của bạn vào đây -->
-        <p class="student-info">Họ và tên: Lý Mạnh Cường | MSSV: 231A010164</p>
+        <!-- Hình ảnh đại diện cá nhân -->
+        <img src="img8.jpg" alt="Ảnh cá nhân" class="avatar">
         
+        <!-- Thông tin sinh viên -->
+        <div class="student-name">Họ và tên: Lý Mạnh Cường</div>
+        <div class="student-info">Mã sinh viên: 231A010164</div>
+        
+        <!-- Menu trỏ đến các bài tập -->
         <ul>
-            <!-- Liên kết tới Bài tập 38 -->
-            <li><a href="bai38.html">Bài tập 38: trắc nghiệm</a></li>
-            
-            <!-- Liên kết tới Bài tập 39 (Đèn kéo quân) -->
+            <li><a href="bai38.html">Kết quả Bài tập 38 (img7.jpg)</a></li>
             <li><a href="den-keo-quan.html">Bài tập 39: Đèn Kéo Quân 3D</a></li>
-            
-            <!-- Liên kết tới Bài tập 40 -->
-            <li><a href="bai40.html">Bài tập 40: mini game</a></li>
+            <li><a href="game.html">Bài tập Mini game Web (Hứng táo)</a></li>
         </ul>
     </div>
+
 </body>
 </html>
